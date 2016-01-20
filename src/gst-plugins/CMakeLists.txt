@@ -7,7 +7,7 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
 )
 
-set(KMS_DATA_CHANNEL_EXAMPLE_SOURCES
+set(MSDATA_SOURCES
   kmsdatachannelexample.c
   kmsshowdata.c
   kmsshowdata.h
@@ -17,11 +17,13 @@ set(KMS_DATA_CHANNEL_EXAMPLE_SOURCES
   kmsfacedetectormetadata.cpp
   kmsimageoverlaymetadata.h
   kmsimageoverlaymetadata.cpp
+  chartermetadata.h
+  chartermetadata.cpp
 )
 
-add_library(kmsdatachannelexample MODULE ${KMS_DATA_CHANNEL_EXAMPLE_SOURCES})
+add_library(msdata MODULE ${MSDATA_SOURCES})
 
-target_link_libraries(kmsdatachannelexample
+target_link_libraries(msdata
   ${KmsGstCommons_LIBRARIES}
   ${gstreamer-1.5_LIBRARIES}
   ${gstreamer-video-1.5_LIBRARIES}
@@ -30,7 +32,7 @@ target_link_libraries(kmsdatachannelexample
 )
 
 install(
-  TARGETS kmsdatachannelexample
+  TARGETS msdata
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_GST_PLUGINS_DIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
