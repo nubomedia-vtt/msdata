@@ -51,6 +51,30 @@ KmsShowFacesImpl::StaticConstructor::StaticConstructor()
                            GST_DEFAULT_NAME);
 }
 
+
+  void KmsShowFacesImpl::setVisualisation (int visualisationId){
+    GstStructure *id;
+    id = gst_structure_new ("visid",
+				 "id", G_TYPE_INT, int (visualisationId),
+				 NULL);
+    g_object_set (G_OBJECT (imageOverlay), "visid", id, NULL);
+    gst_structure_free (id);
+  }
+
+  
+  void KmsShowFacesImpl::setVisualisationArea (int x, int y, int width, int height){
+
+    GstStructure *area;
+    area = gst_structure_new ("area",
+				 "x", G_TYPE_INT, int (x),
+				 "y", G_TYPE_INT, int (y),
+				 "width", G_TYPE_INT, int (width),
+				 "height", G_TYPE_INT, int (height),
+				 NULL);
+    g_object_set (G_OBJECT (imageOverlay), "visarea", area, NULL);
+    gst_structure_free (area);
+  }
+  
 } /* datachannelexample */
 } /* module */
 } /* kurento */

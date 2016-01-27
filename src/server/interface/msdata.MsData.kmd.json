@@ -78,7 +78,49 @@
             "final": true
           }
         ]
-      }
+      },
+	"methods":[
+	    {
+  "name": "setVisualisation",
+          "doc": "Sets the desired visualisation",
+          "params": [
+            {
+              "name": "visualisationId",
+              "doc": "uniqueId of the visualisation",
+              "type": "int"
+            }
+          ]
+	}
+,
+            {
+  "name": "setVisualisationArea",
+          "doc": "Sets the desired rendering area",
+          "params": [
+            {
+              "name": "x",
+              "doc": "x coord of the area",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "doc": "y coord of the area",
+              "type": "int"
+            },
+            {
+              "name": "width",
+              "doc": "width of the area",
+              "type": "int"
+            },
+            {
+              "name": "height",
+              "doc": "height of the area",
+              "type": "int"
+            }
+          ]
+        }
+
+
+	]
     }
   ]
 }

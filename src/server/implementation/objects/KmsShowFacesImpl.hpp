@@ -48,6 +48,9 @@ public:
 
   virtual ~KmsShowFacesImpl () {};
 
+  void setVisualisation (int visualisationId);
+  void setVisualisationArea (int x, int y, int width, int height);
+
   /* Next methods are automatically implemented by code generator */
   virtual bool connect (const std::string &eventType,
                         std::shared_ptr<EventHandler> handler);
@@ -56,6 +59,8 @@ public:
                        Json::Value &response);
 
   virtual void Serialize (JsonSerializer &serializer);
+
+
 
 private:
   GstElement *imageOverlay = NULL;
