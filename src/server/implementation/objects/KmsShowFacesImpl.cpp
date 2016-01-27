@@ -30,7 +30,7 @@ KmsShowFacesImpl::KmsShowFacesImpl (const boost::property_tree::ptree &config,
 
   if (imageOverlay == NULL) {
     throw KurentoException (MEDIA_OBJECT_NOT_AVAILABLE,
-                            "Media Object not available");
+                            "Media Object ShowFaces not available");
   }
 
   g_object_unref (imageOverlay);

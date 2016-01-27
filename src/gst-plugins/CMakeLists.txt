@@ -17,8 +17,8 @@ set(MSDATA_SOURCES
   kmsfacedetectormetadata.cpp
   kmsimageoverlaymetadata.h
   kmsimageoverlaymetadata.cpp
-  chartermetadata.h
-  chartermetadata.cpp
+  kmschartermetadata.h
+  kmschartermetadata.cpp
 )
 
 add_library(msdata MODULE ${MSDATA_SOURCES})

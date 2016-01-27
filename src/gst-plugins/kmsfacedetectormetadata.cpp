@@ -192,11 +192,23 @@ static int getMillisecondsTime()
     return 0;
   }
   //return (unsigned long)((tv.tv_sec * 1000ul) + (tv.tv_usec / 1000ul));
-  return (int)((tv.tv_sec * 1000ul) + (tv.tv_usec / 1000ul));
+  //return (int)((tv.tv_sec * 1000ul) + (tv.tv_usec / 1000ul));
+  //return (int)(((tv.tv_sec * 1000ul) + (tv.tv_usec / 1000ul))/1000000);
+  int stot = (int)tv.tv_sec;
+  int mtot = stot/60;
+  int value = stot - mtot*60;
+
+  if(value < 30){
+    return 120 + value;
+  }
+  if(value < 60){
+    return 130 + value;
+  }
+  return 140 +value;
   //return 123;
 }
 
-static GstStructure *createData(CvRect *r, gdouble resize_factor, guint value, std::string overlay){
+static GstStructure *createData(GstVideoFrame * frame, CvRect *r, gdouble resize_factor, guint value, std::string overlay){
     GstStructure *result;
 
     result = gst_structure_new ("face",
@@ -246,11 +258,16 @@ kms_face_detector_metadata_send_metadata (KmsFaceDetectorMetadata *
   gst_structure_set (faces, "timestamp", GST_TYPE_STRUCTURE, timestamp, NULL);
   gst_structure_free (timestamp);
 
+  //    std::string overlay = std::string("/opt/prope.bmp");
+    std::string overlay = std::string("/opt/heartrate1.bmp");
+
+
   if(!facedetector->priv->pFaceRectSeq || facedetector->priv->pFaceRectSeq->total == 0){
     GstStructure *data;
-    CvRect r = cvRect(0, 0, 100, 100);
-    std::string overlay = std::string("/opt/prope.bmp");
-    data = createData(&r, (gdouble)facedetector->priv->resize_factor, getMillisecondsTime(), overlay);
+    //CvRect r = cvRect(frame->info.width/2, frame->info.height/2, 100, 100);
+    CvRect r = cvRect(100, 100, 100, 100);
+
+    data = createData(frame, &r, (gdouble)facedetector->priv->resize_factor, getMillisecondsTime(), overlay);
     setData(faces, data, 0);
   }
 else
@@ -263,7 +280,7 @@ else
 //    gchar *id = NULL;
 
     r = (CvRect *) cvGetSeqElem (facedetector->priv->pFaceRectSeq, i);
-    data = createData(r, facedetector->priv->resize_factor, getMillisecondsTime(), std::string("/opt/prope.bmp"));
+    data = createData(frame, r, facedetector->priv->resize_factor, getMillisecondsTime(), overlay);
  setData(faces, data, i);
 
 #if 0
@@ -373,6 +390,8 @@ kms_face_detector_metadata_finalize (GObject * object)
 static void
 kms_face_detector_metadata_init (KmsFaceDetectorMetadata * facedetector)
 {
+  std::cout << "\n\n\nGO kms_face_metadata_init" << std::endl;
+
   facedetector->priv = KMS_FACE_DETECTOR_METADATA_GET_PRIVATE (facedetector);
 
   facedetector->priv->pCascadeFace = NULL;
@@ -438,6 +457,8 @@ kms_face_detector_metadata_src_eventfunc (GstBaseTransform * trans,
 static void
 kms_face_detector_metadata_class_init (KmsFaceDetectorMetadataClass * klass)
 {
+  std::cout << "\n\n\nGO kms_face_metadata_class_init begin" << std::endl;
+
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GstVideoFilterClass *video_filter_class = GST_VIDEO_FILTER_CLASS (klass);
 
@@ -477,11 +498,14 @@ kms_face_detector_metadata_class_init (KmsFaceDetectorMetadataClass * klass)
       GST_DEBUG_FUNCPTR (kms_face_detector_metadata_src_eventfunc);
 
   g_type_class_add_private (klass, sizeof (KmsFaceDetectorMetadataPrivate));
+
+  std::cout << "\n\n\nGO kms_face_metadata_class_init end" << std::endl;
 }
 
 gboolean
 kms_face_detector_metadata_plugin_init (GstPlugin * plugin)
 {
+  std::cout << "\n\n\nGO kms_face_metadata_plugin_init" << std::endl;
   return gst_element_register (plugin, PLUGIN_NAME, GST_RANK_NONE,
       KMS_TYPE_FACE_DETECTOR_METADATA);
 }

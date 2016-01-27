@@ -2,6 +2,7 @@
 
 #include <gst/gst.h>
 #include "MediaPipeline.hpp"
+#include "MediaPipelineImpl.hpp"
 #include <KmsCharterImplFactory.hpp>
 #include "KmsCharterImpl.hpp"
 #include <jsonrpc/JsonSerializer.hpp>

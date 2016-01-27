@@ -31,7 +31,7 @@ KmsDetectFacesImpl::KmsDetectFacesImpl (const boost::property_tree::ptree
 
   if (faceDetector == NULL) {
     throw KurentoException (MEDIA_OBJECT_NOT_AVAILABLE,
-                            "Media Object not available");
+                            "Media Object DetectFaces not available");
   }
 
   g_object_unref (faceDetector);

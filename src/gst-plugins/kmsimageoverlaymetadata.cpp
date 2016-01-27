@@ -244,7 +244,7 @@ static void inject(cv::Mat dstMat, MsMetadata *r){
 
   std::stringstream ss;
   ss << r->d;
-  std::string txt = "JES ";
+  std::string txt = ""; //"JES";
   std::string tmp = ss.str();
   txt += tmp.substr(tmp.length()/2, tmp.length());
 
