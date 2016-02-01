@@ -3,6 +3,7 @@
 #ifndef __KMS_SHOW_DATA_IMPL_HPP__
 #define __KMS_SHOW_DATA_IMPL_HPP__
 
+#include "FilterImpl.hpp"
 #include "MediaElementImpl.hpp"
 #include "KmsShowData.hpp"
 #include <EventHandler.hpp>
@@ -36,7 +37,8 @@ namespace module
 namespace datachannelexample
 {
 
-class KmsShowDataImpl : public MediaElementImpl, public virtual KmsShowData
+  class KmsShowDataImpl : public MediaElementImpl, public virtual KmsShowData
+			  //  class KmsShowDataImpl : public FilterImpl, public virtual KmsShowData
 {
 
 public:
@@ -54,6 +56,8 @@ public:
   virtual void Serialize (JsonSerializer &serializer);
 
 private:
+
+  GstElement *msshowdata = NULL;
 
   class StaticConstructor
   {

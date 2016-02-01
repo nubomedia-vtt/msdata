@@ -9,7 +9,7 @@ include_directories(
 
 set(MSDATA_SOURCES
   kmsdatachannelexample.c
-  kmsshowdata.c
+  kmsshowdata.cpp
   kmsshowdata.h
   kmssenddata.c
   kmssenddata.h

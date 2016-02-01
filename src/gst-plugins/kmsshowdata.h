@@ -1,8 +1,12 @@
 #ifndef _KMS_SHOW_DATA_H_
 #define _KMS_SHOW_DATA_H_
 
+
 #include <gst/gst.h>
 #include "commons/kmselement.h"
+#include <gst/video/gstvideofilter.h>
+#include <opencv/cv.h>
+
 
 G_BEGIN_DECLS
 #define KMS_TYPE_SHOW_DATA   (kms_show_data_get_type())
@@ -16,12 +20,14 @@ typedef struct _KmsShowDataPrivate KmsShowDataPrivate;
 
 struct _KmsShowData
 {
+  //  GstVideoFilter base;
   KmsElement base;
   KmsShowDataPrivate *priv;
 };
 
 struct _KmsShowDataClass
 {
+  //GstVideoFilterClass base_facedetector_class;
   KmsElementClass parent_class;
 };
 

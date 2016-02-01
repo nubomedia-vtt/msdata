@@ -31,6 +31,11 @@
 #include <errno.h>
 
 
+#include <gst/gst.h>
+#include "commons/kmselement.h"
+#include <gst/video/gstvideofilter.h>
+#include <opencv/cv.h>
+
 
 #if 1
 #include <opencv/cv.h>
@@ -43,6 +48,7 @@
 
 #endif
 
+cv::Mat auximg;
 
 #include "kmsimageoverlaymetadata.h"
 //#include "GraphUtils.h"
@@ -82,6 +88,7 @@ enum
 
 struct _KmsImageOverlayMetadataPrivate
 {
+  GstElement *text_overlay;
   IplImage *cvImage;
 
   gdouble offsetXPercent, offsetYPercent, widthPercent, heightPercent;
@@ -546,7 +553,7 @@ kms_image_overlay_metadata_initialize_images (KmsImageOverlayMetadata *
 }
 
 static GSList *
-get_faces (GstStructure * faces)
+receiveMetadata(GstStructure * faces)
 {
   gint len, aux;
   GSList *list = NULL;
@@ -627,14 +634,54 @@ cvrect_free (gpointer data)
   g_slice_free (MsMetadata, data);
 }
 
+
+
+static void goVis(KmsImageOverlayMetadata *imageoverlay){
+  //std::cout << "\njestas: " << std::endl;
+  int w = 50;
+  int h = 200;
+  cv::Mat roi(imageoverlay->priv->cvImage, cv::Rect(0, 0, w, h));
+      cv::Mat dstMat = roi.clone();
+      cv::resize(auximg, dstMat, cv::Size(w, h));
+
+      dstMat.copyTo(roi);       
+
+      int max = 165;
+      int min = 100;
+      int randNum = rand()%(max-min + 1) + min;
+
+
+      cvRectangle(imageoverlay->priv->cvImage, cvPoint(20, randNum), cvPoint(25, 165), cvScalar(0,0,255,255), -1);
+      //      cvRectangle(imageoverlay->priv->cvImage, cvPoint(20, 100), cvPoint(25, 165), cvScalar(0,0,255,255), -1);
+
+
+
+
+
+
+
+      //inject(dstMat, r);
+
+      /*
+      dstMat.copyTo(roi);       
+      cv::Mat roi(imageoverlay->priv->cvImage, cv::Rect(r->rect.x, r->rect.y, r->rect.width, r->rect.height));
+      cv::Mat dstMat = roi.clone();
+      cv::resize(costumeAux, dstMat, cv::Size(r->rect.width, r->rect.height));
+
+inject(dstMat, r);
+      */
+
+
+}
+
 static GstFlowReturn
 kms_image_overlay_metadata_transform_frame_ip (GstVideoFilter * filter,
     GstVideoFrame * frame)
 {
   KmsImageOverlayMetadata *imageoverlay = KMS_IMAGE_OVERLAY_METADATA (filter);
   GstMapInfo info;
-  GSList *faces_list;
   KmsSerializableMeta *metadata;
+  GSList *faces_list;
 
   gst_buffer_map (frame->buffer, &info, GST_MAP_READ);
 
@@ -646,10 +693,11 @@ kms_image_overlay_metadata_transform_frame_ip (GstVideoFilter * filter,
   metadata = kms_buffer_get_serializable_meta (frame->buffer);
 
   if (metadata == NULL) {
+    goVis(imageoverlay);
     goto end;
   }
 
-  faces_list = get_faces (metadata->data);
+  faces_list = receiveMetadata (metadata->data);
 
   if (faces_list != NULL) {
     kms_image_overlay_metadata_display_detections_overlay_img (imageoverlay,
@@ -684,6 +732,46 @@ kms_image_overlay_metadata_finalize (GObject * object)
   G_OBJECT_CLASS (kms_image_overlay_metadata_parent_class)->finalize (object);
 }
 
+#if 0
+void io_new_data (GstElement* object, GstBuffer* buffer, KmsImageOverlayMetadata* self)
+{
+  GstMapInfo info;
+  gchar *msg;
+
+  if (!gst_buffer_map (buffer, &info, GST_MAP_READ)) {
+    GST_WARNING_OBJECT (self, "Can not read buffer");
+    return;
+  }
+
+  msg = g_strndup ((const gchar *) info.data, info.size);
+  gst_buffer_unmap (buffer, &info);
+
+  if (msg != NULL) {
+    g_object_set (self->priv->text_overlay, "text", msg, NULL);
+    g_free (msg);
+
+  std::cout << "\njestas: " << std::endl;
+
+  }
+}
+
+
+static void
+kms_image_overlay_data_connect_data (KmsImageOverlayMetadata * self, GstElement * tee)
+{
+  GstElement *identity =  gst_element_factory_make ("identity", NULL);
+  GstPad *identity_sink = gst_element_get_static_pad (identity, "sink");;
+
+  gst_bin_add (GST_BIN (self), identity);
+
+  kms_element_connect_sink_target (KMS_ELEMENT (self), identity_sink, KMS_ELEMENT_PAD_TYPE_DATA);
+  gst_element_link (identity, tee);
+
+  g_signal_connect (identity, "handoff", G_CALLBACK (io_new_data), self);
+
+  g_object_unref (identity_sink);
+}
+#endif
 static void
 kms_image_overlay_metadata_init (KmsImageOverlayMetadata * imageoverlay)
 {
@@ -691,6 +779,9 @@ kms_image_overlay_metadata_init (KmsImageOverlayMetadata * imageoverlay)
 
   imageoverlay->priv->show_debug_info = FALSE;
   imageoverlay->priv->cvImage = NULL;
+
+  //  kms_image_overlay_data_connect_data (imageoverlay, kms_element_get_data_tee (KMS_ELEMENT (imageoverlay)));
+
 }
 
 static void
@@ -734,6 +825,24 @@ kms_image_overlay_metadata_class_init (KmsImageOverlayMetadataClass * klass)
 
   myhash = g_hash_table_new(g_str_hash, g_str_equal);
   //costumeAux = NULL;
+
+  std::string overlay = std::string("/opt/temperature0.bmp");
+    auximg = cvLoadImage (overlay.c_str(), CV_LOAD_IMAGE_UNCHANGED);	
+    std::cout << "\nTHE IMAGE: " << overlay << " " <<
+      auximg.depth() << " " << auximg.channels() << " " << auximg.cols << " " << auximg.rows << std::endl;
+
+
+    /*
+      if(g_hash_table_contains(myhash, aux->augmentable) == FALSE){
+
+
+	costumeAux = cvLoadImage (aux->augmentable, CV_LOAD_IMAGE_UNCHANGED);	
+	g_hash_table_add(myhash, aux->augmentable);
+
+	std::cout << "\nTHE IMAGE: " << aux->augmentable << " " <<
+	  costumeAux.depth() << " " << costumeAux.channels() << " " << costumeAux.cols << " " << costumeAux.rows << std::endl;
+      }
+    */ 
 }
 
 gboolean

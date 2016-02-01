@@ -23,12 +23,33 @@ namespace datachannelexample
 
 KmsShowDataImpl::KmsShowDataImpl (const boost::property_tree::ptree &config,
                                   std::shared_ptr<MediaPipeline> mediaPipeline)  :
+  
   MediaElementImpl (config,
                     std::dynamic_pointer_cast<MediaPipelineImpl> (mediaPipeline),
                     FACTORY_NAME)
 {
 }
+  
+  /*
+  FilterImpl (config,
+              std::dynamic_pointer_cast<MediaObjectImpl> ( mediaPipeline) )
+{
 
+   
+ g_object_set (element, "filter-factory", "kmsshowdata", NULL);
+
+  g_object_get (G_OBJECT (element), "filter", &msshowdata, NULL);
+
+  if (msshowdata == NULL) {
+
+    throw KurentoException (MEDIA_OBJECT_NOT_AVAILABLE,
+                            "Media Object MsShowData not available");
+  }
+
+  g_object_unref (msshowdata);
+  
+}
+  */
 MediaObjectImpl *
 KmsShowDataImplFactory::createObject (const boost::property_tree::ptree &config,
                                       std::shared_ptr<MediaPipeline> mediaPipeline) const

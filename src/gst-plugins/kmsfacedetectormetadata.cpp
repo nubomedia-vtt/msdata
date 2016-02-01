@@ -211,7 +211,7 @@ static int getMillisecondsTime()
 static GstStructure *createData(GstVideoFrame * frame, CvRect *r, gdouble resize_factor, guint value, std::string overlay){
     GstStructure *result;
 
-    result = gst_structure_new ("face",
+    result = gst_structure_new ("msdata",
         "x", G_TYPE_UINT, (guint) (r->x * resize_factor),
         "y", G_TYPE_UINT, (guint) (r->y * resize_factor),
         "width", G_TYPE_UINT,
@@ -261,13 +261,11 @@ kms_face_detector_metadata_send_metadata (KmsFaceDetectorMetadata *
   //    std::string overlay = std::string("/opt/prope.bmp");
     std::string overlay = std::string("/opt/heartrate1.bmp");
 
-
   if(!facedetector->priv->pFaceRectSeq || facedetector->priv->pFaceRectSeq->total == 0){
-    GstStructure *data;
     //CvRect r = cvRect(frame->info.width/2, frame->info.height/2, 100, 100);
     CvRect r = cvRect(100, 100, 100, 100);
 
-    data = createData(frame, &r, (gdouble)facedetector->priv->resize_factor, getMillisecondsTime(), overlay);
+    GstStructure *data = createData(frame, &r, (gdouble)facedetector->priv->resize_factor, getMillisecondsTime(), overlay);
     setData(faces, data, 0);
   }
 else
@@ -282,29 +280,6 @@ else
     r = (CvRect *) cvGetSeqElem (facedetector->priv->pFaceRectSeq, i);
     data = createData(frame, r, facedetector->priv->resize_factor, getMillisecondsTime(), overlay);
  setData(faces, data, i);
-
-#if 0
-    face = gst_structure_new ("face",
-        "x", G_TYPE_UINT, (guint) (r->x * facedetector->priv->resize_factor),
-        "y", G_TYPE_UINT, (guint) (r->y * facedetector->priv->resize_factor),
-        "width", G_TYPE_UINT,
-        (guint) (r->width * facedetector->priv->resize_factor), "height",
-        G_TYPE_UINT, (guint) (r->height * facedetector->priv->resize_factor),
-        "b", G_TYPE_UINT, (guint) (255),
-        "g", G_TYPE_UINT, (guint) (0),
-        "r", G_TYPE_UINT, (guint) (255),
-        "d", G_TYPE_UINT, (guint) (getMillisecondsTime()),
-			      //			      "overlay", G_TYPE_STRING, "/opt/prope.png",	
-			      //			      			      "overlay", G_TYPE_STRING, "/opt/faerie2.bmp",	
-			      "overlay", G_TYPE_STRING, "/opt/prope.bmp",	
-
-        NULL);
-
-    id = g_strdup_printf ("%d", i);
-    gst_structure_set (faces, id, GST_TYPE_STRUCTURE, face, NULL);
-    gst_structure_free (face);
-    g_free (id);
-#endif
   }
   /* send faces detected as metadata */
   kms_buffer_add_serializable_meta (frame->buffer, faces);

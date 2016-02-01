@@ -63,7 +63,6 @@ KmsShowFacesImpl::StaticConstructor::StaticConstructor()
 
   
   void KmsShowFacesImpl::setVisualisationArea (int x, int y, int width, int height){
-
     GstStructure *area;
     area = gst_structure_new ("area",
 				 "x", G_TYPE_INT, int (x),
