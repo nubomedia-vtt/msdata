@@ -16,7 +16,7 @@ namespace kurento
 {
 namespace module
 {
-namespace datachannelexample
+namespace msdatamodule
 {
 
 KmsShowFacesImpl::KmsShowFacesImpl (const boost::property_tree::ptree &config,

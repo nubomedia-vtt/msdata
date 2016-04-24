@@ -2,7 +2,6 @@
 
 #include <gst/gst.h>
 #include "MediaPipeline.hpp"
-#include "MediaPipelineImpl.hpp"
 #include <KmsCharterImplFactory.hpp>
 #include "KmsCharterImpl.hpp"
 #include <jsonrpc/JsonSerializer.hpp>
@@ -16,22 +15,12 @@ namespace kurento
 {
 namespace module
 {
-namespace datachannelexample
+namespace msdatamodule
 {
 
-KmsCharterImpl::KmsCharterImpl (const boost::property_tree::ptree &config, std::shared_ptr<MediaPipeline> mediaPipeline)  : FilterImpl (config,
-              std::dynamic_pointer_cast<MediaObjectImpl> ( mediaPipeline) ) 
+KmsCharterImpl::KmsCharterImpl (const boost::property_tree::ptree &config, std::shared_ptr<MediaPipeline> mediaPipeline)  : FilterImpl (/* FIXME: Add parent class constructor params here */) 
 {
-  g_object_set (element, "filter-factory", "chartermetadata", NULL);
-
-  g_object_get (G_OBJECT (element), "filter", &charter, NULL);
-
-  if (charter == NULL) {
-    throw KurentoException (MEDIA_OBJECT_NOT_AVAILABLE,
-                            "Media Object Charter not available");
-  }
-
-  g_object_unref (charter);
+  // FIXME: Implement this
 }
 
 MediaObjectImpl *
@@ -48,6 +37,6 @@ KmsCharterImpl::StaticConstructor::StaticConstructor()
                            GST_DEFAULT_NAME);
 }
 
-} /* datachannelexample */
+} /* msdatamodule */
 } /* module */
 } /* kurento */

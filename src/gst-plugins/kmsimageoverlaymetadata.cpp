@@ -21,7 +21,7 @@
 
 
 
-
+#include "kmsmisc.h"
 #include <gst/gst.h>
 #include <gst/video/video.h>
 #include <gst/video/gstvideofilter.h>
@@ -49,6 +49,7 @@
 #endif
 
 cv::Mat auximg;
+static int foobar;
 
 #include "kmsimageoverlaymetadata.h"
 //#include "GraphUtils.h"
@@ -377,7 +378,6 @@ inject(dstMat, r);
     
     if(costumeAux.data == NULL){
       /*
-      MsMetadata *r = (MsMetadata*)iterator->data;
       cvRectangle (imageoverlay->priv->cvImage, cvPoint (r->rect.x, r->rect.y),
         cvPoint (r->rect.x + r->rect.width, r->rect.y + r->rect.height), cvScalar (r->b, r->g, r->r, 0), 3,
         8, 0);
@@ -591,11 +591,16 @@ receiveMetadata(GstStructure * faces)
       gst_structure_get (face, "overlay", G_TYPE_STRING, &aux->augmentable, NULL);
       if(g_hash_table_contains(myhash, aux->augmentable) == FALSE){
 
+	std::cout << "\n kmsimageoverlay got IMAGE req: " << aux->augmentable << std::endl;
+	std::string overlay = loadPlanar(aux->augmentable);
+	costumeAux = cvLoadImage (overlay.c_str(), CV_LOAD_IMAGE_UNCHANGED);	
+	//costumeAux = cvLoadImage (aux->augmentable, CV_LOAD_IMAGE_UNCHANGED);
 
-	costumeAux = cvLoadImage (aux->augmentable, CV_LOAD_IMAGE_UNCHANGED);	
+
 	g_hash_table_add(myhash, aux->augmentable);
 
-	std::cout << "\nTHE IMAGE: " << aux->augmentable << " " <<
+	std::cout << "\nTHE IMAGE: " << aux->augmentable << " " << overlay << "" <<
+	  //std::cout << "\nTHE IMAGE: " << aux->augmentable << " " << "" <<
 	  costumeAux.depth() << " " << costumeAux.channels() << " " << costumeAux.cols << " " << costumeAux.rows << std::endl;
       } 
       else{
@@ -693,6 +698,32 @@ kms_image_overlay_metadata_transform_frame_ip (GstVideoFilter * filter,
   metadata = kms_buffer_get_serializable_meta (frame->buffer);
 
   if (metadata == NULL) {
+
+    if(!foobar){
+      foobar = !foobar;
+  //std::string overlay = std::string("/opt/temperature0.bmp");
+  std::string overlay = loadPlanar("http://ssi.vtt.fi/temperature0.bmp");
+
+    auximg = cvLoadImage (overlay.c_str(), CV_LOAD_IMAGE_UNCHANGED);	
+    std::cout << "\nTHE IMAGE: " << overlay << " " <<
+      auximg.depth() << " " << auximg.channels() << " " << auximg.cols << " " << auximg.rows << std::endl;
+    }
+
+
+    GstElement imageOverlay;
+    GstStructure *id = NULL;
+    int theid;
+
+    std::cout << "TRY IT" << std::endl;
+    g_object_get (G_OBJECT (&imageOverlay), "visid", id, NULL);
+    //std::cout << "GOT imageOverlay:" << imageOverlay << std::endl;
+    gst_structure_get (id, "visid", G_TYPE_UINT, &theid, NULL);
+    if(id != NULL){
+      std::cout << "GOT VISID:" << theid << std::endl;
+    }
+    else{
+      std::cout << "NOTGOT VISID:" << std::endl;
+    }
     goVis(imageoverlay);
     goto end;
   }
@@ -825,12 +856,15 @@ kms_image_overlay_metadata_class_init (KmsImageOverlayMetadataClass * klass)
 
   myhash = g_hash_table_new(g_str_hash, g_str_equal);
   //costumeAux = NULL;
+  foobar = 0;
+#if 0
+  //std::string overlay = std::string("/opt/temperature0.bmp");
+  std::string overlay = loadPlanar("http://ssi.vtt.fi/temperature0.bmp");
 
-  std::string overlay = std::string("/opt/temperature0.bmp");
     auximg = cvLoadImage (overlay.c_str(), CV_LOAD_IMAGE_UNCHANGED);	
     std::cout << "\nTHE IMAGE: " << overlay << " " <<
       auximg.depth() << " " << auximg.channels() << " " << auximg.cols << " " << auximg.rows << std::endl;
-
+#endif
 
     /*
       if(g_hash_table_contains(myhash, aux->augmentable) == FALSE){

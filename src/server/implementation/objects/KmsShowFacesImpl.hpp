@@ -12,7 +12,7 @@ namespace kurento
 {
 namespace module
 {
-namespace datachannelexample
+namespace msdatamodule
 {
 class KmsShowFacesImpl;
 } /* datachannelexample */
@@ -22,7 +22,7 @@ class KmsShowFacesImpl;
 namespace kurento
 {
 void Serialize (
-  std::shared_ptr<kurento::module::datachannelexample::KmsShowFacesImpl> &object,
+  std::shared_ptr<kurento::module::msdatamodule::KmsShowFacesImpl> &object,
   JsonSerializer &serializer);
 } /* kurento */
 
@@ -35,7 +35,7 @@ namespace kurento
 {
 namespace module
 {
-namespace datachannelexample
+namespace msdatamodule
 {
 
 class KmsShowFacesImpl : public FilterImpl, public virtual KmsShowFaces

@@ -12,16 +12,16 @@ namespace kurento
 {
 namespace module
 {
-namespace datachannelexample
+namespace msdatamodule
 {
 class KmsCharterImpl;
-} /* datachannelexample */
+} /* msdatamodule */
 } /* module */
 } /* kurento */
 
 namespace kurento
 {
-void Serialize (std::shared_ptr<kurento::module::datachannelexample::KmsCharterImpl> &object, JsonSerializer &serializer);
+void Serialize (std::shared_ptr<kurento::module::msdatamodule::KmsCharterImpl> &object, JsonSerializer &serializer);
 } /* kurento */
 
 namespace kurento
@@ -33,7 +33,7 @@ namespace kurento
 {
 namespace module
 {
-namespace datachannelexample
+namespace msdatamodule
 {
 
 class KmsCharterImpl : public FilterImpl, public virtual KmsCharter
@@ -55,8 +55,6 @@ public:
 
 private:
 
-  GstElement *charter = NULL;
-
   class StaticConstructor
   {
   public:
@@ -67,7 +65,7 @@ private:
 
 };
 
-} /* datachannelexample */
+} /* msdatamodule */
 } /* module */
 } /* kurento */
 

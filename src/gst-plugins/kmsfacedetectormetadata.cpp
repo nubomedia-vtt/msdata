@@ -20,7 +20,7 @@
 //#include <vector>
 //#include <cmath>
 //#include <boost/tuple/tuple.hpp>
-
+//#include "kmsmisc.h"
 #include "kmsfacedetectormetadata.h"
 
 #include <gst/gst.h>
@@ -259,7 +259,14 @@ kms_face_detector_metadata_send_metadata (KmsFaceDetectorMetadata *
   gst_structure_free (timestamp);
 
   //    std::string overlay = std::string("/opt/prope.bmp");
-    std::string overlay = std::string("/opt/heartrate1.bmp");
+//    std::string overlay = std::string("/opt/heartrate1.bmp");
+//  std::string overlay = loadPlanar("http://ssi.vtt.fi/heartrate1.bmp");
+  //std::string overlay = std::string("http://ssi.vtt.fi/heartrate1.png");
+
+
+  
+  std::string overlay = std::string("http://ssi.vtt.fi/heartrate1.bmp");
+  //std::string overlay = std::string("/opt/heartrate1.bmp");
 
   if(!facedetector->priv->pFaceRectSeq || facedetector->priv->pFaceRectSeq->total == 0){
     //CvRect r = cvRect(frame->info.width/2, frame->info.height/2, 100, 100);

@@ -25,7 +25,8 @@ set (GLIB_REQUIRED ^2.42)
 set (OPENCV_REQUIRED ^2.0.0)
 set (BOOST_REQUIRED ^1.54.0)
 #set (PLplot_REQUIRED ^1.54.0)
-
+set (SOUP_REQUIRED 2.40) # For URL support
+pkg_check_modules(SOUP REQUIRED libsoup-2.4>=${SOUP_REQUIRED})
 
 #gst-plugins dependencies
 generic_find (LIBNAME gstreamer-1.5 VERSION ${GST_REQUIRED} REQUIRED)
