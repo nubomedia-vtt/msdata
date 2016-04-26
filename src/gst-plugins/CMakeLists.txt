@@ -9,7 +9,7 @@ include_directories(
 )
 
 set(MSDATA_SOURCES
-  kmsdatachannelexample.c
+  kmsmsdatamodule.c
 #  kmsshowdata.cpp
 #  kmsshowdata.h
 #  kmssenddata.c
@@ -18,6 +18,10 @@ set(MSDATA_SOURCES
   kmsfacedetectormetadata.cpp
   kmsimageoverlaymetadata.h
   kmsimageoverlaymetadata.cpp
+  kmsgraphcmetadata.h
+  kmsgraphcmetadata.cpp
+  kmsgraphsmetadata.h
+  kmsgraphsmetadata.cpp
 #  kmschartermetadata.h
 #  kmschartermetadata.cpp
   kmsmisc.cpp

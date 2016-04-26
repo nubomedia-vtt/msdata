@@ -640,8 +640,73 @@ cvrect_free (gpointer data)
 }
 
 
-
 static void goVis(KmsImageOverlayMetadata *imageoverlay){
+  srand(time(NULL));
+  int windowWidth = 640;
+  int windowHeight = 480;
+  //int memoryLength = 135;
+  int memoryLength = 256;
+  int randomNumber;
+  std::vector<int> numbers;
+  for (int i = 0; i<memoryLength; i++) {
+    randomNumber = rand() % 400 + 1;
+    numbers.push_back(randomNumber);
+  }
+
+  //  while (true) 
+  {
+    //numbers.push_back(rand() % 400 + 1);
+
+    cv::Mat feature_vis = cv::Mat::zeros(windowHeight, windowWidth, CV_8UC3);
+    int yBias = 50;
+    int xBias = 50;
+    char text[100];
+
+    sprintf(text, "random");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - 15), 1, 1, CV_RGB(255, 0, 0), 1);
+
+    sprintf(text, "0");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias), cvPoint(windowWidth - xBias, windowHeight - yBias), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "100");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 100), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 100), cvPoint(windowWidth - xBias, windowHeight - yBias - 100), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "200");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 200), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 200), cvPoint(windowWidth - xBias, windowHeight - yBias - 200), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "300");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 300), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 300), cvPoint(windowWidth - xBias, windowHeight - yBias - 300), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "400");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 400), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 400), cvPoint(windowWidth - xBias, windowHeight - yBias - 400), CV_RGB(255, 255, 255), 1);
+
+
+    for (int i = 1; i<memoryLength; i++) {
+      int y1 = windowHeight - yBias - numbers.at(i - 1);
+      int y2 = windowHeight - yBias - numbers.at(i);
+      int x1 = (windowWidth / memoryLength) * i + xBias;
+      int x2 = (windowWidth / memoryLength) * (i + 1) + xBias;
+      cv::line(feature_vis, cvPoint( x1, y1), cvPoint(x2, y2), CV_RGB(255, 0, 0), 2);
+    }
+    numbers.erase(numbers.begin());
+    numbers.push_back(rand() % 400 + 1);
+
+    cv::imshow("graph", feature_vis);
+
+    
+    if (cv::waitKey(10) > 0) {
+      // Press any key to quit
+      //      break;
+    }
+    
+  }
+
+#if 0
   //std::cout << "\njestas: " << std::endl;
   int w = 50;
   int h = 200;
@@ -675,7 +740,7 @@ static void goVis(KmsImageOverlayMetadata *imageoverlay){
 
 inject(dstMat, r);
       */
-
+#endif
 
 }
 
@@ -701,6 +766,7 @@ kms_image_overlay_metadata_transform_frame_ip (GstVideoFilter * filter,
 
     if(!foobar){
       foobar = !foobar;
+      std::cout << "\nME IMG OVERLAY" << std::endl;
   //std::string overlay = std::string("/opt/temperature0.bmp");
   std::string overlay = loadPlanar("http://ssi.vtt.fi/temperature0.bmp");
 
@@ -709,9 +775,10 @@ kms_image_overlay_metadata_transform_frame_ip (GstVideoFilter * filter,
       auximg.depth() << " " << auximg.channels() << " " << auximg.cols << " " << auximg.rows << std::endl;
     }
 
-
+    /*
     GstElement imageOverlay;
     GstStructure *id = NULL;
+
     int theid;
 
     std::cout << "TRY IT" << std::endl;
@@ -724,6 +791,7 @@ kms_image_overlay_metadata_transform_frame_ip (GstVideoFilter * filter,
     else{
       std::cout << "NOTGOT VISID:" << std::endl;
     }
+    */
     goVis(imageoverlay);
     goto end;
   }
@@ -818,6 +886,7 @@ kms_image_overlay_metadata_init (KmsImageOverlayMetadata * imageoverlay)
 static void
 kms_image_overlay_metadata_class_init (KmsImageOverlayMetadataClass * klass)
 {
+  std::cout << "\n\n\nGO image_overlay_init " << std::endl;
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GstVideoFilterClass *video_filter_class = GST_VIDEO_FILTER_CLASS (klass);
 
@@ -857,6 +926,7 @@ kms_image_overlay_metadata_class_init (KmsImageOverlayMetadataClass * klass)
   myhash = g_hash_table_new(g_str_hash, g_str_equal);
   //costumeAux = NULL;
   foobar = 0;
+  /*
 #if 0
   //std::string overlay = std::string("/opt/temperature0.bmp");
   std::string overlay = loadPlanar("http://ssi.vtt.fi/temperature0.bmp");
@@ -865,7 +935,7 @@ kms_image_overlay_metadata_class_init (KmsImageOverlayMetadataClass * klass)
     std::cout << "\nTHE IMAGE: " << overlay << " " <<
       auximg.depth() << " " << auximg.channels() << " " << auximg.cols << " " << auximg.rows << std::endl;
 #endif
-
+  */
     /*
       if(g_hash_table_contains(myhash, aux->augmentable) == FALSE){
 
@@ -877,11 +947,14 @@ kms_image_overlay_metadata_class_init (KmsImageOverlayMetadataClass * klass)
 	  costumeAux.depth() << " " << costumeAux.channels() << " " << costumeAux.cols << " " << costumeAux.rows << std::endl;
       }
     */ 
+
+  std::cout << "\n\n\nGO image_overlay_init sLLUT " << std::endl;
 }
 
 gboolean
 kms_image_overlay_metadata_plugin_init (GstPlugin * plugin)
 {
+  std::cout << "\n\n\nGO image_overlay_plugin_init " << PLUGIN_NAME << std::endl;
   return gst_element_register (plugin, PLUGIN_NAME, GST_RANK_NONE,
       KMS_TYPE_IMAGE_OVERLAY_METADATA);
 }
