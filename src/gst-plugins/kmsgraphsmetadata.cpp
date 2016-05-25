@@ -280,8 +280,87 @@ cvrect_free (gpointer data)
 
 
 
+static std::vector<int> numbers;
 
 static void goVis(KmsGraphsMetadata *graphs, cv::Mat feature_vis, MsMetadata2 *r){
+  srand(time(NULL));
+  int windowWidth = 640;
+  int windowHeight = 480;
+  //int memoryLength = 135;
+  //int memoryLength = 256;
+  //int randomNumber;
+
+  numbers.push_back(r->data);
+  int memoryLength = numbers.size();
+
+  /*
+  for (int i = 0; i<memoryLength; i++) {
+    randomNumber = rand() % 400 + 1;
+    numbers.push_back(randomNumber);
+  }
+  */
+
+  //while (true) 
+    {
+    //numbers.push_back(rand() % 400 + 1);
+
+    //cv::Mat feature_vis = graphs->priv->cvImage;
+
+    //cv::Mat feature_vis = cv::Mat::zeros(windowHeight, windowWidth, CV_8UC3);
+    int yBias = 50;
+    int xBias = 50;
+    char text[100];
+
+    sprintf(text, "random");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - 15), 1, 1, CV_RGB(255, 0, 0), 1);
+
+    sprintf(text, "0");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias), cvPoint(windowWidth - xBias, windowHeight - yBias), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "100");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 100), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 100), cvPoint(windowWidth - xBias, windowHeight - yBias - 100), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "200");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 200), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 200), cvPoint(windowWidth - xBias, windowHeight - yBias - 200), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "300");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 300), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 300), cvPoint(windowWidth - xBias, windowHeight - yBias - 300), CV_RGB(255, 255, 255), 1);
+
+    sprintf(text, "400");
+    cv::putText(feature_vis, text, cvPoint(10, windowHeight - yBias - 400), 1, 1, CV_RGB(255, 0, 0), 1);
+    cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 400), cvPoint(windowWidth - xBias, windowHeight - yBias - 400), CV_RGB(255, 255, 255), 1);
+
+
+    for (int i = 1; i<memoryLength; i++) {
+      int y1 = windowHeight - yBias - numbers.at(i - 1);
+      int y2 = windowHeight - yBias - numbers.at(i);
+      int x1 = (windowWidth / memoryLength) * i + xBias;
+      int x2 = (windowWidth / memoryLength) * (i + 1) + xBias;
+      cv::line(feature_vis, cvPoint( x1, y1), cvPoint(x2, y2), CV_RGB(255, 0, 0), 2);
+    }
+    if(numbers.size() > 255){
+      numbers.erase(numbers.begin());
+    }
+
+    //numbers.push_back(rand() % 400 + 1);
+
+    //cv::imshow("graph", feature_vis);
+
+    //if (cv::waitKey(10) > 0) {
+      // Press any key to quit
+      //break;
+    //}
+  }
+
+
+}
+
+#if 0
+static void goVisORG(KmsGraphsMetadata *graphs, cv::Mat feature_vis, MsMetadata2 *r){
   srand(time(NULL));
   int windowWidth = 640;
   int windowHeight = 480;
@@ -366,6 +445,8 @@ static void goVis(KmsGraphsMetadata *graphs, cv::Mat feature_vis, MsMetadata2 *r
       cvRectangle(graphs->priv->cvImage, cvPoint(20, randNum), cvPoint(25, 165), cvScalar(0,0,255,255), -1);
 #endif
 }
+#endif
+
 
 static void
     kms_graphs_metadata_display_detections_overlay_img

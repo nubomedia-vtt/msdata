@@ -187,6 +187,9 @@ kms_graphc_metadata_initialize_images (KmsGraphcMetadata *
 //static unsigned long getMillisecondsTime()
 static int getMillisecondsTime()
 {
+  return rand() % 400 + 1;
+
+#if 0
   struct timeval tv;
   if(gettimeofday(&tv, NULL) != 0){
     return 0;
@@ -206,6 +209,7 @@ static int getMillisecondsTime()
   }
   return 140 +value;
   //return 123;
+#endif
 }
 
 static GstStructure *createData(GstVideoFrame * frame, CvRect *r, gdouble resize_factor, guint value, std::string overlay){
@@ -471,6 +475,8 @@ kms_graphc_metadata_class_init (KmsGraphcMetadataClass * klass)
       GST_DEBUG_FUNCPTR (kms_graphc_metadata_src_eventfunc);
 
   g_type_class_add_private (klass, sizeof (KmsGraphcMetadataPrivate));
+
+  srand(time(NULL));
 
   std::cout << "\n\n\nGO kms_graphc_metadata_class_init end" << std::endl;
 }
