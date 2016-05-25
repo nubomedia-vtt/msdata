@@ -83,10 +83,7 @@ struct _KmsGraphsMetadataPrivate
 
 typedef struct _MsMetadata2{
   CvRect rect;
-  int r;
-  int g;
-  int b;
-  int d;
+  int data;
   char* augmentable;
 } MsMetadata2;
 
@@ -152,6 +149,7 @@ kms_graphs_metadata_get_property (GObject * object, guint property_id,
   GST_OBJECT_UNLOCK (graphs);
 }
 
+#if 0
 static void addFgWithAlpha(cv::Mat &bg, cv::Mat &fg) {
 if (fg.channels() < 4) {
 fg.copyTo(bg);  
@@ -170,8 +168,9 @@ fg.copyTo(bg);
    }
    cv::merge(splitted_bg, bg);
  }
+#endif
 
-
+#if 0
 static void inject(cv::Mat dstMat, MsMetadata2 *r){
 //std::cout << "INJECTING..." << std::endl;
 //Gnuplot gp;
@@ -182,7 +181,7 @@ static void inject(cv::Mat dstMat, MsMetadata2 *r){
   int baseline=0;
 
   std::stringstream ss;
-  ss << r->d;
+  ss << r->data;
   std::string txt = ""; //"JES";
   std::string tmp = ss.str();
   txt += tmp.substr(tmp.length()/2, tmp.length());
@@ -197,46 +196,10 @@ cv::putText(fg, txt.c_str(), cv::Point(2, fg.rows-(baseline/2)), font, font_scal
 cv::resize(fg, fg, cv::Size(dstMat.cols, dstMat.rows));
 addFgWithAlpha(dstMat, fg);
 }
+#endif
 
 
-static void
-    kms_graphs_metadata_display_detections_overlay_img
-    (KmsGraphsMetadata * graphs, const GSList * faces_list)
-{
-const GSList *iterator = NULL;
-  
-  for (iterator = faces_list; iterator; iterator = iterator->next) {
-    if(costumeAux.data == NULL){
-      MsMetadata2 *r = (MsMetadata2*)iterator->data;
-      cv::Mat roi(graphs->priv->cvImage, cv::Rect(0, 0, r->rect.width, r->rect.height));
-      cv::Mat dstMat = roi.clone();
-      //cv::resize(costumeAux, dstMat, cv::Size(r->rect.width, r->rect.height));
 
-inject(dstMat, r);
-
-      dstMat.copyTo(roi);       
-
-      cvRectangle (graphs->priv->cvImage, cvPoint (0, 0),
-		   cvPoint (r->rect.width, r->rect.height), cvScalar (0, 255, 255, 0), 3,
-        8, 0);
-    }
-    else{
-      MsMetadata2 *r = (MsMetadata2*)iterator->data;
-      /*
-      cvRectangle (graphs->priv->cvImage, cvPoint (0, 0),
-		   cvPoint (r->rect.width, r->rect.height), cvScalar (0, 255, 255, 0), 3,
-        8, 0);
-      */
-      cv::Mat roi(graphs->priv->cvImage, cv::Rect(r->rect.x, r->rect.y, r->rect.width, r->rect.height));
-      cv::Mat dstMat = roi.clone();
-      cv::resize(costumeAux, dstMat, cv::Size(r->rect.width, r->rect.height));
-
-inject(dstMat, r);
-
-      dstMat.copyTo(roi);       
-    }
-  }
-}
 
 static void
 kms_graphs_metadata_initialize_images (KmsGraphsMetadata *
@@ -284,11 +247,8 @@ receiveMetadata(GstStructure * faces)
       gst_structure_get (face, "y", G_TYPE_UINT, &aux->rect.y, NULL);
       gst_structure_get (face, "width", G_TYPE_UINT, &aux->rect.width, NULL);
       gst_structure_get (face, "height", G_TYPE_UINT, &aux->rect.height, NULL);
-      gst_structure_get (face, "r", G_TYPE_UINT, &aux->r, NULL);
-      gst_structure_get (face, "g", G_TYPE_UINT, &aux->g, NULL);
-      gst_structure_get (face, "b", G_TYPE_UINT, &aux->b, NULL);
-      gst_structure_get (face, "d", G_TYPE_UINT, &aux->d, NULL);
-      
+      gst_structure_get (face, "data", G_TYPE_UINT, &aux->data, NULL);
+#if 0      
       gst_structure_get (face, "overlay", G_TYPE_STRING, &aux->augmentable, NULL);
       if(g_hash_table_contains(myhash, aux->augmentable) == FALSE){
 
@@ -301,7 +261,7 @@ receiveMetadata(GstStructure * faces)
       } 
       else{
       }
-
+#endif
       gst_structure_free (face);
       list = g_slist_append (list, aux);
 
@@ -321,7 +281,7 @@ cvrect_free (gpointer data)
 
 
 
-static void goVis(KmsGraphsMetadata *graphs, cv::Mat feature_vis){
+static void goVis(KmsGraphsMetadata *graphs, cv::Mat feature_vis, MsMetadata2 *r){
   srand(time(NULL));
   int windowWidth = 640;
   int windowHeight = 480;
@@ -407,6 +367,58 @@ static void goVis(KmsGraphsMetadata *graphs, cv::Mat feature_vis){
 #endif
 }
 
+static void
+    kms_graphs_metadata_display_detections_overlay_img
+    (KmsGraphsMetadata * graphs, const GSList * faces_list)
+{
+const GSList *iterator = NULL;
+  
+  for (iterator = faces_list; iterator; iterator = iterator->next) {
+
+      MsMetadata2 *r = (MsMetadata2*)iterator->data;
+      goVis(graphs, graphs->priv->cvImage, r);
+
+#if 0
+      cv::Mat roi(graphs->priv->cvImage, cv::Rect(r->rect.x, r->rect.y, r->rect.width, r->rect.height));
+      cv::Mat dstMat = roi.clone();
+      cv::resize(costumeAux, dstMat, cv::Size(r->rect.width, r->rect.height));
+      inject(dstMat, r);
+      dstMat.copyTo(roi);       
+#endif
+
+#if 0
+    if(costumeAux.data == NULL){
+      MsMetadata2 *r = (MsMetadata2*)iterator->data;
+      cv::Mat roi(graphs->priv->cvImage, cv::Rect(0, 0, r->rect.width, r->rect.height));
+      cv::Mat dstMat = roi.clone();
+      //cv::resize(costumeAux, dstMat, cv::Size(r->rect.width, r->rect.height));
+
+inject(dstMat, r);
+
+      dstMat.copyTo(roi);       
+
+      cvRectangle (graphs->priv->cvImage, cvPoint (0, 0),
+		   cvPoint (r->rect.width, r->rect.height), cvScalar (0, 255, 255, 0), 3,
+        8, 0);
+    }
+    else{
+      MsMetadata2 *r = (MsMetadata2*)iterator->data;
+      /*
+      cvRectangle (graphs->priv->cvImage, cvPoint (0, 0),
+		   cvPoint (r->rect.width, r->rect.height), cvScalar (0, 255, 255, 0), 3,
+        8, 0);
+      */
+      cv::Mat roi(graphs->priv->cvImage, cv::Rect(r->rect.x, r->rect.y, r->rect.width, r->rect.height));
+      cv::Mat dstMat = roi.clone();
+      cv::resize(costumeAux, dstMat, cv::Size(r->rect.width, r->rect.height));
+
+inject(dstMat, r);
+
+      dstMat.copyTo(roi);       
+    }
+#endif
+  }
+}
 
 static GstFlowReturn
 kms_graphs_metadata_transform_frame_ip (GstVideoFilter * filter,
@@ -426,7 +438,7 @@ kms_graphs_metadata_transform_frame_ip (GstVideoFilter * filter,
   /* check if the buffer has metadata */
   metadata = kms_buffer_get_serializable_meta (frame->buffer);
 
-  //if (metadata == NULL) 
+  if (metadata == NULL) 
     {
 
     /*
@@ -441,7 +453,7 @@ kms_graphs_metadata_transform_frame_ip (GstVideoFilter * filter,
     }
     */
       //std::cout << "\nSHOW GRAPH" << std::endl;
-    goVis(graphs, graphs->priv->cvImage);
+      //    goVis(graphs, graphs->priv->cvImage);
     goto end;
   }
 

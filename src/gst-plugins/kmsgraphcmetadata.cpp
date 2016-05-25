@@ -217,16 +217,13 @@ static GstStructure *createData(GstVideoFrame * frame, CvRect *r, gdouble resize
         "width", G_TYPE_UINT,
         (guint) (r->width * resize_factor), "height",
         G_TYPE_UINT, (guint) (r->height * resize_factor),
-        "b", G_TYPE_UINT, (guint) (255),
-        "g", G_TYPE_UINT, (guint) (0),
-        "r", G_TYPE_UINT, (guint) (255),
-        "d", G_TYPE_UINT, (guint) (getMillisecondsTime()),
+        "data", G_TYPE_UINT, (guint) (getMillisecondsTime()),
 			      //			      "overlay", G_TYPE_STRING, "/opt/prope.png",	
 			      //			      			      "overlay", G_TYPE_STRING, "/opt/faerie2.bmp",	
-			      "overlay", G_TYPE_STRING, 
+			      //"overlay", G_TYPE_STRING, 
 				//				"/opt/prope.bmp",	
 
-				overlay.c_str(),	
+				//overlay.c_str(),	
 
         NULL);
 

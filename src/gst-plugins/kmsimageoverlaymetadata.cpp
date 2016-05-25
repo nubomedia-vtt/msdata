@@ -98,10 +98,7 @@ struct _KmsImageOverlayMetadataPrivate
 
 typedef struct _MsMetadata{
   CvRect rect;
-  int r;
-  int g;
-  int b;
-  int d;
+  int data;
   char* augmentable;
 } MsMetadata;
 
@@ -251,7 +248,7 @@ static void inject(cv::Mat dstMat, MsMetadata *r){
   int baseline=0;
 
   std::stringstream ss;
-  ss << r->d;
+  ss << r->data;
   std::string txt = ""; //"JES";
   std::string tmp = ss.str();
   txt += tmp.substr(tmp.length()/2, tmp.length());
@@ -579,10 +576,7 @@ receiveMetadata(GstStructure * faces)
       gst_structure_get (face, "y", G_TYPE_UINT, &aux->rect.y, NULL);
       gst_structure_get (face, "width", G_TYPE_UINT, &aux->rect.width, NULL);
       gst_structure_get (face, "height", G_TYPE_UINT, &aux->rect.height, NULL);
-      gst_structure_get (face, "r", G_TYPE_UINT, &aux->r, NULL);
-      gst_structure_get (face, "g", G_TYPE_UINT, &aux->g, NULL);
-      gst_structure_get (face, "b", G_TYPE_UINT, &aux->b, NULL);
-      gst_structure_get (face, "d", G_TYPE_UINT, &aux->d, NULL);
+      gst_structure_get (face, "data", G_TYPE_UINT, &aux->data, NULL);
 
       //GstStructure *stats;
       //gchar* remoteAddress=0;
@@ -641,6 +635,8 @@ cvrect_free (gpointer data)
 
 
 static void goVis(KmsImageOverlayMetadata *imageoverlay){
+
+#if 0
   srand(time(NULL));
   int windowWidth = 640;
   int windowHeight = 480;
@@ -705,8 +701,8 @@ static void goVis(KmsImageOverlayMetadata *imageoverlay){
     }
     
   }
-
-#if 0
+#endif
+#if 1
   //std::cout << "\njestas: " << std::endl;
   int w = 50;
   int h = 200;
