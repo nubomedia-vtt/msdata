@@ -1,42 +1,26 @@
 include_directories(
   ${KmsGstCommons_INCLUDE_DIRS}
-  ${gstreamer-1.5_INCLUDE_DIRS}
-  ${gstreamer-video-1.5_INCLUDE_DIRS}
+  ${GSTREAMER_INCLUDE_DIRS}
+  ${GSTREAMER_VIDEO_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${opencv_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
-  ${SOUP_INCLUDE_DIRS}
+  ${OPENCV_INCLUDE_DIRS}
 )
 
 set(MSDATA_SOURCES
-  kmsmsdatamodule.c
-#  kmsshowdata.cpp
-#  kmsshowdata.h
-#  kmssenddata.c
-#  kmssenddata.h
-  kmsfacedetectormetadata.h
-  kmsfacedetectormetadata.cpp
-  kmsimageoverlaymetadata.h
-  kmsimageoverlaymetadata.cpp
-  kmsgraphcmetadata.h
-  kmsgraphcmetadata.cpp
-  kmsgraphsmetadata.h
-  kmsgraphsmetadata.cpp
-#  kmschartermetadata.h
-#  kmschartermetadata.cpp
-  kmsmisc.cpp
-  kmsmisc.h  
+  msdata.c
+  kmsmsdatagraph.cpp
+  kmsmsdatagraph.h
+  kmsmsdata.cpp
+  kmsmsdata.h
 )
 
 add_library(msdata MODULE ${MSDATA_SOURCES})
 
 target_link_libraries(msdata
   ${KmsGstCommons_LIBRARIES}
-  ${gstreamer-1.5_LIBRARIES}
-  ${gstreamer-video-1.5_LIBRARIES}
-  ${opencv_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${SOUP_LIBRARIES}
+  ${GSTREAMER_LIBRARIES}
+  ${GSTREAMER_VIDEO_LIBRARIES}
+  ${OPENCV_LIBRARIES}
 )
 
 install(

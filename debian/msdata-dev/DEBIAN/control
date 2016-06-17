@@ -1,0 +1,10 @@
+Package: msdata-dev
+Source: msdata
+Version: 6.5.0
+Architecture: amd64
+Maintainer: Maintainer Name
+Installed-Size: 78
+Depends: msdata (= 6.5.0), kms-core-6.0-dev, kms-elements-6.0-dev, kms-filters-6.0-dev, libopencv-dev
+Section: utils
+Priority: optional
+Description: dev package description

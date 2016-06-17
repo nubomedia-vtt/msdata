@@ -1,0 +1,8 @@
+a45fcb4cdbab1fc938f08bd7a6a61c98  usr/include/kurento/modules/msdata/KmsMsData.hpp
+8ef89a1e3e67fa62bfe1e6341eda35b8  usr/include/kurento/modules/msdata/KmsMsDataImpl.hpp
+d1b479313764698c59e0eae09ce97cd8  usr/include/kurento/modules/msdata/KmsMsDataImplFactory.hpp
+e9e661400614ce3dc0c5114b65d5734c  usr/lib/x86_64-linux-gnu/pkgconfig/kmsmsdata.pc
+66d846b15349e221f062c902a3382a1e  usr/share/cmake-2.8/Modules/FindKMSMSDATA.cmake
+e22f47ca9c33db132a9a196ff31c5137  usr/share/doc/msdata-dev/changelog.gz
+d41d8cd98f00b204e9800998ecf8427e  usr/share/doc/msdata-dev/copyright
+51a5cb21f7fb776f6d2af02498f4ad48  usr/share/kurento/modules/msdata.kmd.json

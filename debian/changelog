@@ -1,3 +1,10 @@
-msdata (0.0.1) testing; urgency=medium
-	* Reload
-	 -- Markus <markus.ylikerala@vtt.fi>  Fri, 17 Jun 2015 12:00:00 +0300
+msdata (6.5.0) testing; urgency=medium
+  * Refactored
+ -- Markus <markus.ylikerala@vtt.fi>  Fri, 01 Jan 2016 12:00:00 +0300
+msdata (6.4.0) testing; urgency=medium
+  * Rename
+ -- Markus <markus.ylikerala@vtt.fi>  Fri, 01 Jan 2016 12:00:00 +0300
+	
+msdata (1.0.0) testing; urgency=medium
+  * Reload
+ -- Markus <markus.ylikerala@vtt.fi>  Fri, 17 Apr 2015 12:00:00 +0300

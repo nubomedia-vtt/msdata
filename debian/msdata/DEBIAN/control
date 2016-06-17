@@ -1,0 +1,9 @@
+Package: msdata
+Version: 6.5.0
+Architecture: amd64
+Maintainer: Maintainer Name
+Installed-Size: 164
+Depends: kms-core-6.0, kms-jsonrpc-1.0, kmsjsoncpp, libc6 (>= 2.4), libgcc1 (>= 1:4.1.1), libglib2.0-0 (>= 2.37.3), libgstreamer-plugins-base1.5-0 (>= 1.8.0~20160530103212.387.g21728a3.trusty), libgstreamer1.5-0 (>= 1.8.0~20160530103131.368.g0fb3a08.trusty), libopencv-core2.4, libsigc++-2.0-0c2a (>= 2.0.2), libstdc++6 (>= 4.4.0)
+Section: utils
+Priority: optional
+Description: package description

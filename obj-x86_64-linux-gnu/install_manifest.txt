@@ -1,0 +1,12 @@
+/usr/lib/x86_64-linux-gnu/libkmsmsdatainterface.a
+/usr/include/kurento/modules/msdata/KmsMsData.hpp
+/usr/lib/x86_64-linux-gnu/pkgconfig/kmsmsdata.pc
+/usr/lib/x86_64-linux-gnu/libkmsmsdataimpl.so.0.0.1~14.g3e875da
+/usr/lib/x86_64-linux-gnu/libkmsmsdataimpl.so.0
+/usr/lib/x86_64-linux-gnu/libkmsmsdataimpl.so
+/usr/include/kurento/modules/msdata/KmsMsDataImpl.hpp
+/usr/include/kurento/modules/msdata/KmsMsDataImplFactory.hpp
+/usr/lib/x86_64-linux-gnu/kurento/modules/libkmsmsdatamodule.so
+/usr/share/cmake-2.8/Modules/FindKMSMSDATA.cmake
+/usr/share/kurento/modules/msdata.kmd.json
+/usr/lib/x86_64-linux-gnu/gstreamer-1.5/libmsdata.so

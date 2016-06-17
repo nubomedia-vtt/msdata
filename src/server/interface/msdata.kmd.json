@@ -1,5 +1,5 @@
 {
-  "name": "msdatamodule",
-  "version": "6.4.0",
+  "name": "msdata",
+  "version": "0.0.1-dev",
   "kurentoVersion": "^6.0.0"
 }

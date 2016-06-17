@@ -16,27 +16,37 @@ include (CodeGenerator)
 get_values_from_model(PREFIX VALUE MODELS ${CMAKE_SOURCE_DIR}/src/server/interface KEYS version)
 
 get_git_version (PROJECT_VERSION ${VALUE_VERSION})
-install_git_hook (pre-commit ${CMAKE_CURRENT_SOURCE_DIR}/hooks/pre-commit.hook)
 
-include (GenericFind)
+string(REPLACE "." ";" VERSION_LIST ${PROJECT_VERSION})
+list(GET VERSION_LIST 0 PROJECT_VERSION_MAJOR)
+list (LENGTH VERSION_LIST _len)
+if (${_len} GREATER 1)
+  list(GET VERSION_LIST 1 PROJECT_VERSION_MINOR)
+endif ()
+if (${_len} GREATER 2)
+  list(GET VERSION_LIST 2 PROJECT_VERSION_PATCH)
+endif ()
 
-set (GST_REQUIRED ^1.5.0)
-set (GLIB_REQUIRED ^2.42)
-set (OPENCV_REQUIRED ^2.0.0)
-set (BOOST_REQUIRED ^1.54.0)
-#set (PLplot_REQUIRED ^1.54.0)
-set (SOUP_REQUIRED 2.40) # For URL support
-pkg_check_modules(SOUP REQUIRED libsoup-2.4>=${SOUP_REQUIRED})
+find_package(PkgConfig)
+
+set (GST_REQUIRED 1.5.0)
+set (GLIB_REQUIRED 2.38)
+set (OPENCV_REQUIRED 2.0.0)
 
 #gst-plugins dependencies
-generic_find (LIBNAME gstreamer-1.5 VERSION ${GST_REQUIRED} REQUIRED)
-generic_find (LIBNAME gstreamer-base-1.5 VERSION ${GST_REQUIRED} REQUIRED)
-generic_find (LIBNAME gstreamer-video-1.5 VERSION ${GST_REQUIRED} REQUIRED)
-generic_find (LIBNAME gstreamer-check-1.5 VERSION ${GST_REQUIRED} REQUIRED)
+pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.5>=${GST_REQUIRED})
+pkg_check_modules(GSTREAMER_BASE REQUIRED gstreamer-base-1.5>=${GST_REQUIRED})
+pkg_check_modules(GSTREAMER_VIDEO REQUIRED gstreamer-video-1.5>=${GST_REQUIRED})
+pkg_check_modules(GSTREAMER_CHECK REQUIRED gstreamer-check-1.5>=${GST_REQUIRED})
+pkg_check_modules(KMSCORE REQUIRED kmscore)
+pkg_check_modules(OPENCV REQUIRED opencv>=${OPENCV_REQUIRED})
+
+#generic_find (LIBNAME gstreamer-1.5 VERSION ${GST_REQUIRED} REQUIRED)
+#generic_find (LIBNAME gstreamer-base-1.5 VERSION ${GST_REQUIRED} REQUIRED)
+#generic_find (LIBNAME gstreamer-video-1.5 VERSION ${GST_REQUIRED} REQUIRED)
+#generic_find (LIBNAME gstreamer-check-1.5 VERSION ${GST_REQUIRED} REQUIRED)
 generic_find (LIBNAME KmsGstCommons REQUIRED)
-generic_find (LIBNAME opencv VERSION ${OPENCV_REQUIRED} REQUIRED)
-generic_find (LIBNAME Boost VERSION ${BOOST_REQUIRED} REQUIRED)
-#generic_find (LIBNAME plplot VERSION ${PLPLOT_REQUIRED} REQUIRED)
+#generic_find (LIBNAME opencv VERSION ${OPENCV_REQUIRED} REQUIRED)
 
 
 set (VERSION ${PROJECT_VERSION})
