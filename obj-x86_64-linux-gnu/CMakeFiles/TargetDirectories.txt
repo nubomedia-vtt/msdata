@@ -1,4 +1,0 @@
-/home/tteyli/uusnubomedia/msdata/obj-x86_64-linux-gnu/src/server/CMakeFiles/kmsmsdataimpl.dir
-/home/tteyli/uusnubomedia/msdata/obj-x86_64-linux-gnu/src/server/CMakeFiles/kmsmsdatainterface.dir
-/home/tteyli/uusnubomedia/msdata/obj-x86_64-linux-gnu/src/server/CMakeFiles/kmsmsdatamodule.dir
-/home/tteyli/uusnubomedia/msdata/obj-x86_64-linux-gnu/src/gst-plugins/CMakeFiles/msdata.dir
