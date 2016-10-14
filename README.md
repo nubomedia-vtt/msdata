@@ -8,6 +8,11 @@ The repository contains implementation for utilizing MultisensoryDataFilterModul
 
 http://nubomedia-vtt-msdata.readthedocs.org/en/latest/
 
+**Artifacts**
+
+Maven Central:
+http://repo1.maven.org/maven2/fi/vtt/nubomedia/msdata/msdatademograph/
+
 **Licensing and distribution**
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
