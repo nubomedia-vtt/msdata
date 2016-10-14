@@ -1,6 +1,0 @@
-#ifndef _KMS_MISC_H_
-#define _KMS_MISC_H_
-
-extern std::string loadPlanar(std::string modelUrl);
-
-#endif
