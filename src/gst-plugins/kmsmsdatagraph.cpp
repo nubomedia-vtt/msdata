@@ -208,7 +208,7 @@ static void visualize(cv::Mat feature_vis){
     cv::line(feature_vis, cvPoint(xBias, windowHeight - yBias - 400), cvPoint(windowWidth - xBias, windowHeight - yBias - 400), CV_RGB(255, 255, 255), 1);
 
 
-    for (int i = 1; i<memoryLength; i++) {
+    for (int i = 1; i<memoryLength-1; i++) {
       int y1 = windowHeight - yBias - numbers.at(i - 1);
       int y2 = windowHeight - yBias - numbers.at(i);
       int x1 = (windowWidth / memoryLength) * i + xBias;
